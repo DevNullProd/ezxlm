@@ -20,7 +20,7 @@ yarn add ezxlm
 
 Take for example the following transaction...
 
-```
+```js
 const tx = {
   _links:
     { self:
@@ -69,15 +69,15 @@ const tx = {
 
 ...in conjunction with the **ezxlm** call...
 
-```
+```js
 const {simplify} = require("ezxlm")
 const simplified = simplify(tx)
 ```
 
 ...produces:
 
-```
-# simplified =>
+```js
+// simplified =>
 {
   "id": "73ccc1c241fe314baa0280c7629b98644469faccdfdb0add654ae7e9b0dc9818",
   "paging_token": "141057905800515584",
@@ -363,7 +363,7 @@ const simplified = simplify(tx)
 
 Contrast just calling the **StellarSDK.fromXDR** methods...
 
-```
+```js
 const StellarSdk  = require('stellar-sdk')
 const xdr_to_json = require('json-xdr').toJSON
 
@@ -374,7 +374,7 @@ tx.result         = xdr_to_json(StellarSdk.xdr.TransactionResult.fromXDR(tx.resu
 
 ...which produces the following **complex** transaction:
 
-```
+```js
 {
         "_links": {
           "self": {
