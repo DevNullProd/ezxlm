@@ -8,6 +8,10 @@
   "scripts": {
     "test": "jest"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devnullprod/ezxlm"
+  },
   "dependencies": {
     "js-xdr": "^1.2.0",
     "json-xdr": "^0.1.1",
@@ -15,5 +19,10 @@
   },
   "devDependencies": {
     "jest": "^26.6.3"
-  }
+  },
+  "keywords":[
+    "xlm",
+    "transaction",
+    "simplifier"
+  ]
 }
