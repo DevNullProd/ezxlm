@@ -114,6 +114,7 @@ const expected = {
       {
         "lastModifiedLedgerSeq": 32842603,
         "__type": "account",
+        "___type": "ledgerEntryState",
         "accountId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
         "balance": "119972300",
         "seqNum": "117381718196025458",
@@ -126,6 +127,7 @@ const expected = {
       {
         "lastModifiedLedgerSeq": 32842603,
         "__type": "account",
+        "___type": "ledgerEntryUpdated",
         "accountId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
         "balance": "119972300",
         "seqNum": "117381718196025459",
@@ -142,6 +144,7 @@ const expected = {
           {
             "lastModifiedLedgerSeq": 32842601,
             "__type": "offer",
+            "___type": "ledgerEntryState",
             "sellerId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
             "offerId": "378761140",
             "selling": {
@@ -164,6 +167,7 @@ const expected = {
           {
             "lastModifiedLedgerSeq": 32842603,
             "__type": "account",
+            "___type": "ledgerEntryState",
             "accountId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
             "balance": "119972300",
             "seqNum": "117381718196025459",
@@ -176,6 +180,7 @@ const expected = {
           {
             "lastModifiedLedgerSeq": 32842603,
             "__type": "account",
+            "___type": "ledgerEntryUpdated",
             "accountId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
             "balance": "119972300",
             "seqNum": "117381718196025459",
@@ -188,6 +193,7 @@ const expected = {
           {
             "lastModifiedLedgerSeq": 32842601,
             "__type": "trustline",
+            "___type": "ledgerEntryState",
             "accountId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
             "asset": {
               "assetCode": "USD",
@@ -201,6 +207,7 @@ const expected = {
           {
             "lastModifiedLedgerSeq": 32842603,
             "__type": "trustline",
+            "___type": "ledgerEntryUpdated",
             "accountId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
             "asset": {
               "assetCode": "USD",
@@ -218,6 +225,7 @@ const expected = {
           {
             "lastModifiedLedgerSeq": 32842603,
             "__type": "offer",
+            "___type": "ledgerEntryCreated",
             "sellerId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
             "offerId": "378761251",
             "selling": {
@@ -233,6 +241,7 @@ const expected = {
           {
             "lastModifiedLedgerSeq": 32842603,
             "__type": "account",
+            "___type": "ledgerEntryState",
             "accountId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
             "balance": "119972300",
             "seqNum": "117381718196025459",
@@ -245,6 +254,7 @@ const expected = {
           {
             "lastModifiedLedgerSeq": 32842603,
             "__type": "account",
+            "___type": "ledgerEntryUpdated",
             "accountId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
             "balance": "119972300",
             "seqNum": "117381718196025459",
@@ -257,6 +267,7 @@ const expected = {
           {
             "lastModifiedLedgerSeq": 32842603,
             "__type": "trustline",
+            "___type": "ledgerEntryState",
             "accountId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
             "asset": {
               "assetCode": "USD",
@@ -270,6 +281,7 @@ const expected = {
           {
             "lastModifiedLedgerSeq": 32842603,
             "__type": "trustline",
+            "___type": "ledgerEntryUpdated",
             "accountId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
             "asset": {
               "assetCode": "USD",
