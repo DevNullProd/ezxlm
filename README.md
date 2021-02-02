@@ -1198,6 +1198,37 @@ To the following:
 
 **Note**: in this example, the *offer* **_type** transformation has also been applied in accordance to the rules specified above
 
+**Note** if both the containing object and the *data* object contains a **__type** property, it will be copied to ***___type***
+before the data object is merged so as to preserve the value. For example the following:
+
+```
+{
+ "_type": "ledgerEntryState",
+ "state": {
+  "lastModifiedLedgerSeq": 33822986,
+  "data": {
+   "_type": "account",
+   "account": {
+    "balance": "6513473433",
+    // ...
+   }
+  }
+ }
+}
+```
+
+Will be converted to:
+
+```
+{
+  "__type": "account"
+ "___type": "ledgerEntryState",
+ "lastModifiedLedgerSeq": 33822986,
+ "balance": "6513473433",
+ // ...
+}
+```
+
 ### body simplification
 
 ezxlm will convert the following:
@@ -1228,6 +1259,8 @@ To the following:
 
 **Note**: in this example, the *manageBuyOffer* **_type** transformation has also been applied in accordance to the rules specified above
 
+**Note** if both the containing object and the *body* object contains a **__type** property, it will be copied to ***___type***
+before the body object is merged so as to preserve the value.
 
 ### assetCode simplification
 
