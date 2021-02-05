@@ -78,26 +78,24 @@ const expected = {
         {
           "selling": {
             "assetCode": "USD",
-            "issuer": "GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX",
-            "__type": "assetTypeCreditAlphanum4"
+            "issuer": "GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX"
           },
           "buying": "assetTypeNative",
           "buyAmount": "0",
           "price": 0.0001,
           "offerId": "378761140",
-          "__type": "manageBuyOffer"
+          "_type": "manageBuyOffer"
         },
         {
           "selling": {
             "assetCode": "USD",
-            "issuer": "GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX",
-            "__type": "assetTypeCreditAlphanum4"
+            "issuer": "GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX"
           },
           "buying": "assetTypeNative",
           "buyAmount": "13559882415",
           "price": 0.19158869794631053,
           "offerId": "0",
-          "__type": "manageBuyOffer"
+          "_type": "manageBuyOffer"
         }
       ]
     },
@@ -107,7 +105,6 @@ const expected = {
         "signature": "akwqqV7Xf6t8Kr0HTaCDM5jxfsZNhdgjkubJ84SN0zSege5sxh8gDc/E5EPbrE/Nhgf4ryl1j3yce5kmmIRZAQ=="
       }
     ],
-    "__type": "envelopeTypeTx"
   },
   "result": {
     "feeCharged": "200",
@@ -115,35 +112,34 @@ const expected = {
       "results": [
         {
           "manageBuyOfferResult": {
-            "offersClaimed": [],
             "offer": "manageOfferDeleted",
-            "__type": "manageBuyOfferSuccess"
+            "_type": "manageBuyOfferSuccess"
           },
-          "__type": "opInner"
+          "_type": "manageBuyOffer"
         },
         {
           "manageBuyOfferResult": {
-            "offersClaimed": [],
             "offer": {
-              "sellerId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
-              "offerId": "378761251",
-              "selling": {
-                "assetCode": "USD",
-                "issuer": "GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX",
-                "__type": "assetTypeCreditAlphanum4"
+              "offer": {
+                "sellerId": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
+                "offerId": "378761251",
+                "selling": {
+                  "assetCode": "USD",
+                  "issuer": "GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX",
+                },
+                "buying": "assetTypeNative",
+                "amount": "2597920216",
+                "price": 5.219514568026518,
+                "flags": 0,
               },
-              "buying": "assetTypeNative",
-              "amount": "2597920216",
-              "price": 5.219514568026518,
-              "flags": 0,
-              "__type": "manageOfferCreated"
+              "_type": "manageOfferCreated"
             },
-            "__type": "manageBuyOfferSuccess"
+            "_type": "manageBuyOfferSuccess"
           },
-          "__type": "opInner"
+          "_type": "manageBuyOffer"
         }
       ],
-      "__type": "txSuccess"
+      "_type": "txSuccess"
     }
   }
 }
