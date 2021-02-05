@@ -1,6 +1,6 @@
 {
   "name": "ezxlm",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Simplifies XLM Data Structures",
   "main": "lib/index.js",
   "author": "Dev Null Productions <devnullproductions@gmail.com>",
