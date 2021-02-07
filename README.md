@@ -905,29 +905,77 @@ ezxlm manipulates the specified transaction via the following operations behind 
   - fee_meta_xdr
 - Recursively iterating through the transaction and where applicable:
   - Deleting keys with null and undefined values
-  - Removing **_type** keys, merging corresponding values and/or related values into the parent object (see below)
-  - Merging values of **data** keys into the parent objects (see below)
-  - Merging values of **body** keys into the parent objects (ese below)
+  - Deleting empty arrays
   - Deleting **ext** keys and corresponding values
-  - Converting asset codes from XDR respresentations nested in alphaNum4 and alphaNum12 objects into simple human freindly strings (see below)
-  - Converting **issuer**, **sourceAccount**, **sellerId**, and **accountId** nested ed25519 representations into common addresses (see below)
+  - Converting nested asset codes into human friendly strings and collapsing them into their parent properties (see below)
+  - Converting nested ed25519 keys into common addresses and collapsing them into their parent properties (see below)
+  - Flattening simple _type objects (see below)
   - Converting numerator / denominator based **price** information into simplified float values (see below)
+  - Collapsing *version* objects into the parent object (see below)
+  - Merging operation children into the operation objects (see below)
+  - Merging results children into the result objects
+  - Merging **data** objects into their parent objects (see below)
+  - Merging **body** objects into their parent objects (see below)
+  - Merging **tr** objects into their parent objects (see below)
 
 The resulting simplified transaction object is returned from the **simplify** method
 
-### _type simplification
+### assetCode conversion
 
 ezxlm will convert the following:
 
 ```
- {
-	"_type": "manageBuyOffer",
-	"manageBuyOfferOp": {
-	  "selling": {
-         // ...
-	  },
+"selling": {
+  "_type": "assetTypeCreditAlphanum4",
+  "alphaNum4": {
+    "assetCode": "VVNEAA==",
+    "issuer": {
+      "_type": "publicKeyTypeEd25519",
+      "ed25519": "6KYahh5gr2D4B3PgY0blxyy+Wdyt2jdgjVjvQlEdn9w="
+    }
+  }
+}
+```
+
+To the following:
+
+```
+"selling": {
+  "assetCode": "USD",
+  "issuer": "GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX",
+},
+```
+
+**Note**: in this example, the *ed25519* transformation has also been applied in accordance to the rules specified below.
+
+### ed25519 conversion
+
+ezxlm will convert the following:
+
+```
+"sourceAccount": {
+  "_type": "keyTypeEd25519",
+  "ed25519": "mcfP1x5DZziNHLxXU1oyYLS+ujC/WNUI5MpshBvN2s4="
+}
+```
+
+To the following:
+
+```
+"sourceAccount": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
+```
+
+This applies to all ed25519 fields
+
+
+### simple _type conversion
+
+ezxlm will convert the following:
+
+```
+{
 	  "buying": {
-		"_type": "assetTypeNative"
+		  "_type": "assetTypeNative"
 	  }
 }
 ```
@@ -936,23 +984,165 @@ To the following:
 
 ```
 {
-  "__type": "manageBuyOffer",
-  "selling": {
-    // ...
-  },
   "buying": "assetTypeNative"
-},
+}
 
 ```
 
-Specifically:
 
-- In the case of the object only containing the _type property, the corresponding value will replace the object (see **buying** in the above example)
-- In the case of the object containing another property, the corresponding value will be merged into the object (see the top level object containing **manageBuyOfferOp** in the above example)
-- _type will be converted to __type (two underscores)
+This conversion will only be applied to objects containing a _type property and no others.
 
+### price conversion
 
-### data simplification
+ezxlm will convert the following:
+
+```
+"price": {
+  "n": 1568229641,
+  "d": 300455075
+}
+```
+
+To the following:
+
+```
+"price": 5.219514568026518
+```
+
+This is accomplished by dividing **n** by **d** and assigning it to price.
+
+### version conversion
+
+ezxlm will collapse 'v1', 'v2', etc fields from:
+
+```
+"envelope": {
+  "_type": "envelopeTypeTx",
+  "v1": {
+    "tx" : {
+      // ...
+    }
+  }
+}
+```
+
+To the following:
+
+```
+"envelope" : {
+  "tx" : {
+    // ...
+  }
+}
+```
+
+### operations conversion
+
+For each operation, ezxlm will convert the following:
+
+```
+{
+  "body": {
+    "_type": "manageBuyOffer",
+    "manageBuyOfferOp": {
+      "selling": {
+        "_type": "assetTypeCreditAlphanum4",
+        "alphaNum4": {
+          "assetCode": "VVNEAA==",
+          "issuer": {
+            "_type": "publicKeyTypeEd25519",
+            "ed25519": "6KYahh5gr2D4B3PgY0blxyy+Wdyt2jdgjVjvQlEdn9w="
+          }
+        }
+      },
+      "buying": {
+        "_type": "assetTypeNative"
+      },
+      "buyAmount": "0",
+      "price": {
+        "n": 1,
+        "d": 10000
+      },
+      "offerId": "378761140"
+    }
+  }
+},
+```
+
+To the following:
+
+```
+{
+  "body": {
+    "_type": "manageBuyOffer",
+    "selling": {
+      "_type": "assetTypeCreditAlphanum4",
+      "alphaNum4": {
+        "assetCode": "VVNEAA==",
+        "issuer": {
+          "_type": "publicKeyTypeEd25519",
+          "ed25519": "6KYahh5gr2D4B3PgY0blxyy+Wdyt2jdgjVjvQlEdn9w="
+        }
+      }
+    },
+    "buying": {
+      "_type": "assetTypeNative"
+    },
+    "buyAmount": "0",
+    "price": {
+      "n": 1,
+      "d": 10000
+    },
+    "offerId": "378761140"
+  }
+}
+```
+
+*Note*: Other conversions will be applied, including the collapsing of the **body** object into the parent operation (see below)
+
+### results conversion
+
+For each result, ezxlm will convert the following:
+
+```
+{
+  "_type": "opInner",
+  "tr": {
+    "_type": "manageBuyOffer",
+    "manageBuyOfferResult": {
+      "_type": "manageBuyOfferSuccess",
+      "success": {
+        "offersClaimed": [],
+        "offer": {
+          "_type": "manageOfferDeleted"
+        }
+      }
+    }
+  }
+}
+```
+
+To the following:
+
+```
+{
+  "_type": "opInner",
+  "tr": {
+    "_type": "manageBuyOffer",
+    "manageBuyOfferResult": {
+      "_type": "manageBuyOfferSuccess",
+      "offersClaimed": [],
+      "offer": {
+        "_type": "manageOfferDeleted"
+      }
+    }
+  }
+}
+```
+
+**Note: Other conversion will be applied, including the collapsing of the **tr** object in the parent result (see below)
+
+### data coversion
 
 ezxlm will convert the following:
 
@@ -975,45 +1165,12 @@ To the following:
 ```
 {
   "lastModifiedLedgerSeq": 32842603,
-  "__type": "offer",
+  "_type": "offer",
   "offerId": "378761251",
   "amount": "2597920216",
    // ...
 },
 
-```
-
-**Note**: in this example, the *offer* **_type** transformation has also been applied in accordance to the rules specified above
-
-**Note** if both the containing object and the *data* object contains a **__type** property, it will be copied to ***___type***
-before the data object is merged so as to preserve the value. For example the following:
-
-```
-{
- "_type": "ledgerEntryState",
- "state": {
-  "lastModifiedLedgerSeq": 33822986,
-  "data": {
-   "_type": "account",
-   "account": {
-    "balance": "6513473433",
-    // ...
-   }
-  }
- }
-}
-```
-
-Will be converted to:
-
-```
-{
-  "__type": "account"
- "___type": "ledgerEntryState",
- "lastModifiedLedgerSeq": 33822986,
- "balance": "6513473433",
- // ...
-}
 ```
 
 ### body simplification
@@ -1037,30 +1194,28 @@ To the following:
 
 ```
 {
-  "__type": "manageBuyOffer"
+  "_type": "manageBuyOffer"
   "buyAmount": "0",
   "offerId": "378761140"
 }
 
 ```
 
-**Note**: in this example, the *manageBuyOffer* **_type** transformation has also been applied in accordance to the rules specified above
-
-**Note** if both the containing object and the *body* object contains a **__type** property, it will be copied to ***___type***
-before the body object is merged so as to preserve the value.
-
-### assetCode simplification
+### tr simplification
 
 ezxlm will convert the following:
 
 ```
-"selling": {
-  "_type": "assetTypeCreditAlphanum4",
-  "alphaNum4": {
-    "assetCode": "VVNEAA==",
-    "issuer": {
-      "_type": "publicKeyTypeEd25519",
-      "ed25519": "6KYahh5gr2D4B3PgY0blxyy+Wdyt2jdgjVjvQlEdn9w="
+{
+  "_type": "opInner",
+  "tr": {
+    "_type": "manageBuyOffer",
+    "manageBuyOfferResult": {
+      "_type": "manageBuyOfferSuccess",
+      "offersClaimed": [],
+      "offer": {
+        "_type": "manageOfferDeleted"
+      }
     }
   }
 }
@@ -1069,57 +1224,17 @@ ezxlm will convert the following:
 To the following:
 
 ```
-"selling": {
-  "assetCode": "USD",
-  "issuer": "GDUKMGUGDZQK6YHYA5Z6AY2G4XDSZPSZ3SW5UN3ARVMO6QSRDWP5YLEX",
-  "__type": "assetTypeCreditAlphanum4"
-},
-```
-
-**Note**: in this example, the *issuer* **_type** transformation has also been applied in accordance to the rules specified above and the **ed25519** transformation has also been applied in accordance to the rules specified below.
-
-
-### ed25519 simplification
-
-ezxlm will convert the following:
-
-```
-"sourceAccount": {
-  "_type": "keyTypeEd25519",
-  "ed25519": "mcfP1x5DZziNHLxXU1oyYLS+ujC/WNUI5MpshBvN2s4="
+{
+  "_type": "manageBuyOffer",
+  "manageBuyOfferResult": {
+    "_type": "manageBuyOfferSuccess",
+    "offersClaimed": [],
+    "offer": {
+      "_type": "manageOfferDeleted"
+    }
+  }
 }
 ```
-
-To the following:
-
-```
-"sourceAccount": "GCM4PT6XDZBWOOENDS6FOU22GJQLJPV2GC7VRVII4TFGZBA3ZXNM55SV",
-```
-
-This applies to the following fields:
-- sourceAccount
-- issuer
-- sellerId
-- accountId
-
-### price simplification
-
-ezxlm will convert the following:
-
-```
-"price": {
-  "n": 1568229641,
-  "d": 300455075
-}
-```
-
-To the following:
-
-```
-"price": 5.219514568026518
-```
-
-This is accomplished by dividing **n** by **d** and assigning it to price.
 
 ## Legaleese
 
