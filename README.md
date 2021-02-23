@@ -911,6 +911,7 @@ ezxlm manipulates the specified transaction via the following operations behind 
   - Converting nested ed25519 keys into common addresses and collapsing them into their parent properties (see below)
   - Flattening simple _type objects (see below)
   - Converting numerator / denominator based **price** information into simplified float values (see below)
+  - Removing null bytes from **text** fields
   - Collapsing *version* objects into the parent object (see below)
   - Merging operation children into the operation objects (see below)
   - Merging results children into the result objects
